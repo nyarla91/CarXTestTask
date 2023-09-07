@@ -1,24 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Factory;
+using Monster;
 
-public class Spawner : Transformable {
-	[SerializeField] private GameObject m_monsterPrefab;
-	[SerializeField] private float m_firstSpawnDelay = 1;
-	[SerializeField] private float m_interval = 3;
-	[SerializeField] private Transform m_moveTarget;
+[RequireComponent(typeof(PoolFactory))]
+public class Spawner : Transformable
+{
+	[SerializeField] private float _firstSpawnDelay = 1;
+	[SerializeField] private float _interval = 3;
+	[SerializeField] private Transform _moveTarget;
 
-	private void Start() {
+	private PoolFactory _monsterFactory;
+	private PoolFactory MonsterFactory => _monsterFactory ??= GetComponent<PoolFactory>(); 
+	
+	private void Start()
+	{
 		StartCoroutine(SpawnCycle());
 	}
 
-	private IEnumerator SpawnCycle() {
-		yield return new WaitForSeconds(m_firstSpawnDelay);
-		
-		while (true) {
-			var monster = Instantiate(m_monsterPrefab, Transform.position, Quaternion.identity).GetComponent<Monster>();
-			monster.Init(m_moveTarget);
-			
-			yield return new WaitForSeconds(m_interval);
+	private IEnumerator SpawnCycle()
+	{
+		yield return new WaitForSeconds(_firstSpawnDelay);
+
+		while (true)
+		{
+			MonsterMovement monster = MonsterFactory.GetNewObject<MonsterMovement>(Transform.position);
+			monster.Init(_moveTarget);
+
+			yield return new WaitForSeconds(_interval);
 		}
 	}
 }

@@ -7,7 +7,8 @@ public static class Extentions
     /// <summary>
     /// Same as LINQ Min but returns element with min value itself
     /// </summary>
-    public static TSource MinElement<TSource>(this IEnumerable<TSource> source, Func<TSource, float> comparator) {
+    public static TSource MinElement<TSource>(this IEnumerable<TSource> source, Func<TSource, float> comparator)
+    {
         TSource[] array = source.ToArray();
         TSource result = default(TSource);
         float min = Single.MaxValue;

@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using Factory;
+using Projectiles;
 using UnityEngine;
 
-public abstract class Tower<TProjectile> : Transformable where TProjectile : Projectile {
-    [SerializeField] private float m_shootInterval = 0.5f;
-    [SerializeField] private float m_range = 4f;
-    [SerializeField] private GameObject m_projectilePrefab;
+[RequireComponent(typeof(PoolObject))]
+public abstract class Tower<TProjectile> : Transformable where TProjectile : Projectile
+{
+    [SerializeField] private float _shootInterval = 0.5f;
 
-    protected abstract Transform MTarget { get; }
-    
+    private PoolFactory _projectileFactory;
+    private PoolFactory ProjectileFactory => _projectileFactory ??= GetComponent<PoolFactory>();
+
+    protected abstract Transform Target { get; }
+
     private void Start()
     {
         StartCoroutine(ShootCycle());
@@ -18,14 +22,12 @@ public abstract class Tower<TProjectile> : Transformable where TProjectile : Pro
     {
         while (true)
         {
-            yield return new WaitUntil(() => MTarget != null);
+            yield return new WaitUntil(() => Target != null);
 
-            if (m_projectilePrefab == null)
-                throw new UnassignedReferenceException($"{gameObject} projectile prefab is unassigned");
-            TProjectile projectile = Instantiate(m_projectilePrefab, Transform.position, Quaternion.identity).GetComponent<TProjectile>();
-            InitProjectile(projectile, MTarget);
-            
-            yield return new WaitForSeconds(m_shootInterval);
+            TProjectile projectile = ProjectileFactory.GetNewObject<TProjectile>(Transform.position);
+            InitProjectile(projectile, Target);
+
+            yield return new WaitForSeconds(_shootInterval);
         }
     }
 

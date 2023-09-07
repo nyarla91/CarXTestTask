@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-[ExecuteAlways]
-public abstract class Transformable : MonoBehaviour {
-    private Transform m_transform;
-    
+public abstract class Transformable : MonoBehaviour
+{
+    private Transform _transform;
+
     [Obsolete] public new Transform transform => Transform;
-    public Transform Transform => m_transform ??= gameObject.transform;
+    
+    public Transform Transform => _transform ??= gameObject.transform;
 }
