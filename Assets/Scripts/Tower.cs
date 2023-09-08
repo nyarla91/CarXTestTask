@@ -21,7 +21,7 @@ public abstract class Tower<TProjectile> : Transformable where TProjectile : Pro
         {
             IEnumerable<Collider> collidersInRange = Physics.OverlapSphere(Transform.position, _range);
             IEnumerable<ITowerTarget> targetsInRange = collidersInRange.Select(collider => collider.GetComponent<ITowerTarget>());
-            targetsInRange = targetsInRange.Where(target => target != null);
+            targetsInRange = targetsInRange.Where(target => target != null).Where(target => target.Alive);
             return targetsInRange.MinElement(target => Vector3.Distance(Transform.position, target.CurrentPosition));
         }
     }

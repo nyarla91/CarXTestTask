@@ -13,7 +13,8 @@ namespace Monster
 
 		private Rigidbody _rigidbody;
 		private PoolObject _poolObject;
-		
+
+		public bool Alive => gameObject.activeSelf;
 		public Vector3 CurrentPosition => Transform.position;
 
 		private Rigidbody Rigidbody => _rigidbody ??= GetComponent<Rigidbody>();

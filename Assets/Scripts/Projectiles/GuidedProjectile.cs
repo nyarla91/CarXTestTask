@@ -24,12 +24,12 @@ namespace Projectiles
 
 		private void FixedUpdate()
 		{
-			if (_target == null)
+			if (_target == null || !_target.Alive)
 			{
 				PoolDisable();
 				return;
 			}
-
+			
 			Vector3 direction = _target.CurrentPosition - Transform.position;
 			direction.Normalize();
 			Rigidbody.velocity = direction * _speed;
