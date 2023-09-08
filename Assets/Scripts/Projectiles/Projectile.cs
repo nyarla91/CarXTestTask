@@ -10,20 +10,12 @@ namespace Projectiles
     public abstract class Projectile : PoolObject
     {
         [FormerlySerializedAs("m_damage")] [SerializeField] private int _damage = 1;
-        [FormerlySerializedAs("m_speed")] [SerializeField] private float _speed = 0.2f;
 
         private Rigidbody _rigidbody;
-        private Rigidbody Rigidbody => _rigidbody ??= GetComponent<Rigidbody>();
-
-        protected Vector3 Direction
-        {
-            get => Rigidbody.velocity.normalized;
-            set => Rigidbody.velocity = _speed * value.normalized;
-        }
+        protected Rigidbody Rigidbody => _rigidbody ??= GetComponent<Rigidbody>();
 
         private void OnTriggerEnter(Collider other)
         {
-            print(other);
             if ( ! other.TryGetComponent(out MonsterVitals monster))
                 return;
 

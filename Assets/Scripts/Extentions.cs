@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class Extentions
 {
@@ -23,4 +24,6 @@ public static class Extentions
 
         return result;
     }
+
+    public static Vector3 WithY(this Vector3 vector, float y) => new Vector3(vector.x, y, vector.z);
 }

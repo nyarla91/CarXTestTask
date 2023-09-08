@@ -4,9 +4,9 @@ namespace Projectiles
 {
     public class CannonProjectile : Projectile
     {
-        public void Init(Vector3 direction)
+        public void Init(Vector3 direction, float speed)
         {
-            Direction = direction.normalized;
+            Rigidbody.velocity = direction * speed;
         }
     }
 }

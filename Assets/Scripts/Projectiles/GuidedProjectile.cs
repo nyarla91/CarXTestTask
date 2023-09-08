@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using Monster;
+using UnityEngine;
 
 namespace Projectiles
 {
 	public class GuidedProjectile : Projectile
 	{
-		private Transform _target;
+		[SerializeField] private float _speed = 0.2f;
+		
+		private ITowerTarget _target;
 
-		public void Init(Transform target)
+		public void Init(ITowerTarget target)
 		{
 			if (_target != null)
 				return;
@@ -27,7 +30,9 @@ namespace Projectiles
 				return;
 			}
 
-			Direction = _target.position - Transform.position;
+			Vector3 direction = _target.CurrentPosition - Transform.position;
+			direction.Normalize();
+			Rigidbody.velocity = direction * _speed;
 		}
 	}
 }
